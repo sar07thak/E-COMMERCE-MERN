@@ -2,7 +2,10 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authdataContext } from '../context/authContext';
 import axios from 'axios'; // ✅ correct import
+import { auth, provider } from '../utils/firebase';
+import { signInWithPopup } from 'firebase/auth';
 
+  
 const Login = () => {
   const navigate = useNavigate();
   const { serverUrl } = useContext(authdataContext);
@@ -62,6 +65,27 @@ const Login = () => {
     }
   };
 
+
+  
+    const loginGoogle = async() => {
+      try{
+        const response = await signInWithPopup(auth,provider);
+        console.log(response)
+        let userName = response.user  ;
+        let name = userName.displayName ;
+        let email = userName.email ;
+  
+        const result = await axios.post(`${serverUrl}/user/gooleLogin`, {
+           userName: name,   // ✅ matches the schema
+           email 
+         }, { withCredentials: true });
+  
+         console.log(result)
+      }catch(err){
+        console.log(err);
+      }
+    }
+
   return (
     <div className="h-screen flex justify-center items-center bg-gray-100">
       <form
@@ -75,6 +99,7 @@ const Login = () => {
 
         {/* Google Login Button */}
         <button
+          onClick={loginGoogle}
           type="button"
           className="flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition duration-300"
         >

@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authdataContext } from '../context/authContext'; // import context
 import axios from 'axios'; // default import
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../utils/firebase';
 
 export const Signup = () => {
   const { serverUrl } = useContext(authdataContext); // ✅ extract serverUrl from context
@@ -64,6 +66,25 @@ export const Signup = () => {
     }
   };
 
+
+  const GoogleSignUp = async() => {
+    try{
+      const response = await signInWithPopup(auth,provider);
+      console.log(response)
+      let userName = response.user  ;
+      let name = userName.displayName ;
+      let email = userName.email ;
+
+      const result = await axios.post(`${serverUrl}/user/gooleLogin`, {
+         userName: name,   // ✅ matches the schema
+         email 
+       }, { withCredentials: true });
+
+       console.log(result)
+    }catch(err){
+      console.log(err);
+    }
+  }
   return (
     <div className="h-screen flex justify-center items-center bg-gray-100">
       <form
@@ -76,6 +97,7 @@ export const Signup = () => {
 
         {/* Google Signup Button (UI only) */}
         <button
+          onClick={GoogleSignUp}
           type="button"
           className="flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition duration-300"
         >
