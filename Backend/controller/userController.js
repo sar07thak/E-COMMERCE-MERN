@@ -1,7 +1,7 @@
 const validator = require("validator");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const { genToken } = require("../config/token");
 
 const register = async (req, res) => {
   try {
@@ -37,9 +37,7 @@ const register = async (req, res) => {
     });
 
     // ✅ Sign JWT
-    const token = jwt.sign({ _id: newUser._id }, process.env.JWTKEY, {
-      expiresIn: 3600,
-    });
+    const token = await genToken(newUser._id);
 
     // ✅ Set cookie and return success
     res
@@ -57,7 +55,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    console.log("BODY:", req.body); // 👈 ADD THIS
+    // console.log("BODY:", req.body); // 👈 ADD THIS
     const { email, password } = req.body;
 
     // ✅ Input validation
@@ -77,11 +75,7 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign(
-      { userName: existUser.userName, _id: existUser._id },
-      process.env.JWTKEY,
-      { expiresIn: 3600 }
-    );
+    const token = await genToken(existUser._id);
 
     res
       .status(200)

@@ -1,21 +1,23 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ Correct import
-
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { authdataContext } from '../context/authContext'; // import context
+import axios from 'axios'; // default import
 
 export const Signup = () => {
-      const navigate = useNavigate(); // ✅ Use hook
+  const { serverUrl } = useContext(authdataContext); // ✅ extract serverUrl from context
+  const navigate = useNavigate();
+
+  // State variables
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
+  // ✅ Validate form before submission
   function validateForm() {
     const newErrors = {};
 
-    if (!name.trim()) {
-      newErrors.name = "Name is required";
-    }
-
+    if (!name.trim()) newErrors.name = "Name is required";
     if (!email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
@@ -31,29 +33,69 @@ export const Signup = () => {
     return newErrors;
   }
 
-  function handleSubmit(e) {
+  // ✅ Handle form submission
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    setErrors(validationErrors);
 
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("Form Data:", { name, email, password });
-      // Optionally clear the form here
-      setName("");
-      setEmail("");
-      setPassword("");
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
     }
-  }
+
+    try {
+
+      console.log("🚀 Payload to be sent:", {
+    userName: name,
+    email,
+    password
+  });
+
+      const response = await axios.post(`${serverUrl}/user/register`, {
+         userName: name,   // ✅ matches the schema
+         email,
+         password
+       }, { withCredentials: true });
+
+      console.log(response.data );
+      // navigate("/login");
+    } catch (err) {
+      console.error("❌ Registration Error:", err.response?.data || err.message);
+    }
+  };
+
   return (
     <div className="h-screen flex justify-center items-center bg-gray-100">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSignUp}
         className="flex flex-col gap-4 w-full max-w-md p-6 border-2 border-gray-300 rounded-2xl shadow-lg bg-white"
       >
         <h2 className="text-2xl font-semibold text-center text-gray-700">
           Sign Up
         </h2>
 
+        {/* Google Signup Button (UI only) */}
+        <button
+          type="button"
+          className="flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition duration-300"
+        >
+          <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="Google logo"
+            className="w-5 h-5"
+          />
+          <span className="text-sm font-medium text-gray-700">
+            Sign up with Google
+          </span>
+        </button>
+
+        <div className="flex items-center gap-2 my-2">
+          <hr className="flex-grow border-gray-300" />
+          <span className="text-gray-400 text-sm">or</span>
+          <hr className="flex-grow border-gray-300" />
+        </div>
+
+        {/* Name Input */}
         <div>
           <input
             type="text"
@@ -67,6 +109,7 @@ export const Signup = () => {
           )}
         </div>
 
+        {/* Email Input */}
         <div>
           <input
             type="email"
@@ -80,6 +123,7 @@ export const Signup = () => {
           )}
         </div>
 
+        {/* Password Input */}
         <div>
           <input
             type="password"
@@ -93,19 +137,27 @@ export const Signup = () => {
           )}
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           className="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300"
         >
           Submit
         </button>
-        <p className='flex justify-center items-center gap-[10px] text-gray-800 '>you have any account ?
-            <span className='text-blue-900 text-[17px] font-semibold cursor-pointer' onClick={() => navigate("/login")} >Login</span>
+
+        {/* Navigation to Login */}
+        <p className="flex justify-center items-center gap-2 text-gray-800">
+          Already have an account?
+          <span
+            className="text-blue-900 text-[17px] font-semibold cursor-pointer"
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </span>
         </p>
       </form>
     </div>
-  )
-}
+  );
+};
 
-
-export default Signup ;
+export default Signup;

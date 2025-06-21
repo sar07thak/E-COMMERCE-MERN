@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ Correct import
-
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { authdataContext } from '../context/authContext';
+import axios from 'axios'; // ✅ correct import
 
 const Login = () => {
-          const navigate = useNavigate(); // ✅ Use hook
+  const navigate = useNavigate();
+  const { serverUrl } = useContext(authdataContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
-  function validateForm() {
+  // ✅ Form validation
+  const validateForm = () => {
     const newErrors = {};
 
     if (!email.trim()) {
@@ -24,37 +28,55 @@ const Login = () => {
     }
 
     return newErrors;
-  }
+  };
 
-  function handleSubmit(e) {
+  // ✅ Handle login
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    setErrors(validationErrors);
 
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("Form Data:", { email, password });
-      setEmail("");
-      setPassword("");
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
     }
-  }
+
+    // ✅ Show request payload
+    console.log("🚀 Payload to be sent:", {
+      email,
+      password
+    });
+
+    try {
+      const response = await axios.post(
+        `${serverUrl}/user/login`,
+        { email, password },
+        { withCredentials: true }
+      );
+
+      console.log("✅ Login Successful:", response.data);
+
+      // Optional: Redirect after login
+      // navigate('/dashboard');
+    } catch (err) {
+      console.error("❌ Login Error:", err.response?.data || err.message);
+    }
+  };
 
   return (
     <div className="h-screen flex justify-center items-center bg-gray-100">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleLogin}
         className="flex flex-col gap-4 w-full max-w-md p-10 border-2 border-gray-300 rounded-2xl shadow-lg bg-white"
       >
         <div className="text-center text-gray-700">
           <h2 className="text-2xl font-semibold">Login Page</h2>
-          <h1 className="text-lg font-semibold">
-            Welcome to Shop, Place your order
-          </h1>
+          <h1 className="text-lg font-semibold">Welcome to Shop, Place your order</h1>
         </div>
 
         {/* Google Login Button */}
         <button
           type="button"
-          className="flex  items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition duration-300"
+          className="flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg hover:bg-gray-100 transition duration-300"
         >
           <img
             src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -72,6 +94,7 @@ const Login = () => {
           <hr className="flex-grow border-gray-300" />
         </div>
 
+        {/* Email Input */}
         <div>
           <input
             type="email"
@@ -85,6 +108,7 @@ const Login = () => {
           )}
         </div>
 
+        {/* Password Input */}
         <div>
           <input
             type="password"
@@ -98,14 +122,23 @@ const Login = () => {
           )}
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           className="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300"
         >
           Submit
         </button>
-        <p className='flex justify-center items-center gap-[10px] text-gray-800 '>create a account ?
-            <span className='text-blue-900 text-[17px] font-semibold cursor-pointer' onClick={() => navigate("/signup")} >Sign-up</span>
+
+        {/* Redirect to Signup */}
+        <p className="flex justify-center items-center gap-2 text-gray-800">
+          You don't have an account?
+          <span
+            className="text-blue-900 text-[17px] font-semibold cursor-pointer"
+            onClick={() => navigate("/signup")}
+          >
+            Create New Account
+          </span>
         </p>
       </form>
     </div>
@@ -113,4 +146,3 @@ const Login = () => {
 };
 
 export default Login;
- 
