@@ -1,12 +1,15 @@
-import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { authdataContext } from '../context/authContext'; // import context
-import axios from 'axios'; // default import
-import { signInWithPopup } from 'firebase/auth';
-import { auth, provider } from '../utils/firebase';
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { authdataContext } from "../context/AuthContext"; // import context
+import axios from "axios"; // default import
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../utils/firebase";
+import { userDataContext } from "../context/userContext";
 
 export const Signup = () => {
   const { serverUrl } = useContext(authdataContext); // ✅ extract serverUrl from context
+  const {getCurrentUser} = useContext(userDataContext)
+  
   const navigate = useNavigate();
 
   // State variables
@@ -46,45 +49,49 @@ export const Signup = () => {
     }
 
     try {
+      const response = await axios.post(
+        `${serverUrl}/user/register`,
+        {
+          userName: name, // ✅ matches the schema
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
 
-      console.log("🚀 Payload to be sent:", {
-    userName: name,
-    email,
-    password
-  });
-
-      const response = await axios.post(`${serverUrl}/user/register`, {
-         userName: name,   // ✅ matches the schema
-         email,
-         password
-       }, { withCredentials: true });
-
-      console.log(response.data );
-      // navigate("/login");
+      console.log(response.data);
+      getCurrentUser();
+      navigate("/");
     } catch (err) {
-      console.error("❌ Registration Error:", err.response?.data || err.message);
+      console.error(
+        "❌ Registration Error:",
+        err.response?.data || err.message
+      );
     }
   };
 
+  const GoogleSignUp = async () => {
+    try {
+      const response = await signInWithPopup(auth, provider);
+      console.log(response);
+      let userName = response.user;
+      let name = userName.displayName;
+      let email = userName.email;
 
-  const GoogleSignUp = async() => {
-    try{
-      const response = await signInWithPopup(auth,provider);
-      console.log(response)
-      let userName = response.user  ;
-      let name = userName.displayName ;
-      let email = userName.email ;
+      const result = await axios.post(
+        `${serverUrl}/auth/gooleLogin`,
+        {
+          userName: name, // ✅ matches the schema
+          email,
+        },
+        { withCredentials: true }
+      );
 
-      const result = await axios.post(`${serverUrl}/user/gooleLogin`, {
-         userName: name,   // ✅ matches the schema
-         email 
-       }, { withCredentials: true });
-
-       console.log(result)
-    }catch(err){
+      console.log(result);
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
   return (
     <div className="h-screen flex justify-center items-center bg-gray-100">
       <form

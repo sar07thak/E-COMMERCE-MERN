@@ -2,8 +2,10 @@ import React from 'react'
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <div className='bg-red-400 h-[100%]'>
+      Home   
+    </div>
   )
 }
 
-export default Home
+export default Home 

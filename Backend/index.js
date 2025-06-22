@@ -3,7 +3,8 @@ const cookieParser = require("cookie-parser");
 const main = require("./config/database");
 const app = express();
 const cors = require("cors");
-const userRouter = require("./Routes/userRoutes");
+const authRouter = require("./Routes/userRoutes");
+const userRouter = require("./Routes/CurrentUser");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -11,11 +12,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: "http://localhost:5173",
-    credentials : true
+    credentials: true,
   })
 );
+
 //*   ✅ Routes
-app.use("/user", userRouter);
+app.use("/auth", authRouter);
+app.use("/user" ,userRouter );
 
 main()
   .then(() => {
