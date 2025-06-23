@@ -50,7 +50,7 @@ export const Signup = () => {
 
     try {
       const response = await axios.post(
-        `${serverUrl}/user/register`,
+        `${serverUrl}/auth/register`,
         {
           userName: name, // ✅ matches the schema
           email,
@@ -87,16 +87,19 @@ export const Signup = () => {
         { withCredentials: true }
       );
 
+      getCurrentUser();
+      navigate("/");
+
       console.log(result);
     } catch (err) {
       console.log(err);
     }
   };
   return (
-    <div className="h-screen flex justify-center items-center bg-gray-100">
+    <div className="h-screen flex justify-center items-center bg-[#B5838D]">
       <form
         onSubmit={handleSignUp}
-        className="flex flex-col gap-4 w-full max-w-md p-6 border-2 border-gray-300 rounded-2xl shadow-lg bg-white"
+        className="flex flex-col gap-4 w-full max-w-md p-6 rounded-2xl shadow-xl shadow-gray-700 bg-white"
       >
         <h2 className="text-2xl font-semibold text-center text-gray-700">
           Sign Up

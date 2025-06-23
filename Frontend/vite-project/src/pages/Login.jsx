@@ -4,7 +4,7 @@ import { authdataContext } from "../context/AuthContext";
 import axios from "axios"; // ✅ correct import
 import { auth, provider } from "../utils/firebase";
 import { signInWithPopup } from "firebase/auth";
-import { userDataContext } from "../context/userContext";
+import { userDataContext } from "../context/UserContext.jsx";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -46,11 +46,10 @@ const Login = () => {
     }
     try {
       const response = await axios.post(
-        `${serverUrl}/user/login`,
+        `${serverUrl}/auth/login`,
         { email, password },
         { withCredentials: true }
       );
-
       console.log("✅ Login Successful:", response.data);
       getCurrentUser() ;
       navigate('/');
@@ -76,17 +75,19 @@ const Login = () => {
         { withCredentials: true }
       );
 
+      getCurrentUser();
+      navigate("/");
       console.log(result);
     } catch (err) {
-      console.log(err);
+      console.log("login Error" + err );
     }
   };
 
   return (
-    <div className="h-screen flex justify-center items-center bg-gray-100">
+    <div className="h-screen flex justify-center items-center bg-[#B5838D]">
       <form
         onSubmit={handleLogin}
-        className="flex flex-col gap-4 w-full max-w-md p-10 border-2 border-gray-300 rounded-2xl shadow-lg bg-white"
+        className="flex flex-col gap-4 w-full max-w-md p-10  rounded-2xl shadow-xl shadow-gray-700 bg-white"
       >
         <div className="text-center text-gray-700">
           <h2 className="text-2xl font-semibold">Login Page</h2>
