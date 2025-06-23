@@ -4,7 +4,7 @@ import { authdataContext } from "../context/AuthContext"; // import context
 import axios from "axios"; // default import
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/firebase";
-import { userDataContext } from "../context/userContext";
+import { userDataContext } from "../context/UserContext.jsx";
 
 export const Signup = () => {
   const { serverUrl } = useContext(authdataContext); // ✅ extract serverUrl from context

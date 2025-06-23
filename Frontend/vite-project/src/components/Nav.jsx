@@ -1,14 +1,32 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { IoSearchCircleOutline, IoSearchCircleSharp } from "react-icons/io5";
 import { IoMdHome } from "react-icons/io";
 import { FaCircleUser } from "react-icons/fa6";
 import { MdOutlineShoppingCart, MdContacts } from "react-icons/md";
 import { HiOutlineCollection } from "react-icons/hi";
 import logo from '../assets/download.png';
+import { userDataContext } from '../context/UserContext';
+import { useNavigate } from 'react-router-dom';
+import { authdataContext } from '../context/AuthContext';
+import axios from 'axios';
 
 function Nav() {
+  const navigate = useNavigate()
   const [showProfile, setShowProfile] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const { userData , getCurrentUser } = useContext(userDataContext)
+  const { serverUrl } = useContext(authdataContext);
+
+
+  const handleLogout = async() => {
+    try{
+      const result = await axios.get(`${getCurrentUser}/auth/logOut` , { withCredentials : true });
+      console.log(result.data);
+      getCurrentUser();
+    }catch(err){
+      console.log(err);
+    }
+  }
 
   return (
     <div className="w-full h-[70px] fixed top-0 z-10 bg-white shadow-md border-b border-gray-200 flex items-center justify-between px-4 md:px-12">
@@ -27,28 +45,25 @@ function Nav() {
       </ul>
 
       {/* Right Side Icons */}
-      <div className="flex items-center gap-4 relative">
+      <div className="flex items-center gap-4 relative  ">
         {showSearch ? (
           <IoSearchCircleSharp
-            className="text-[28px] text-gray-700 cursor-pointer"
+            className="text-[35px] text-gray-700 cursor-pointer "
             onClick={() => setShowSearch(false)}
           />
         ) : (
           <IoSearchCircleOutline
-            className="text-[28px] text-gray-700 cursor-pointer"
+            className="text-[35px] text-gray-700 cursor-pointer "
             onClick={() => setShowSearch(true)}
           />
         )}
 
-        <FaCircleUser
-          className="text-[24px] text-gray-700 cursor-pointer"
-          onClick={() => setShowProfile(prev => !prev)}
-        />
-
-        <div className="w-[30px] h-[30px] bg-[#B5838D] text-white rounded-full flex items-center justify-center font-semibold cursor-pointer">
-          U
-        </div>
-
+        {
+         !userData && <FaCircleUser className="text-[24px] text-gray-700 cursor-pointer" onClick={() => setShowProfile(prev => !prev)} />
+        }
+        {
+          userData && <div className="w-[30px] h-[30px] bg-[#B5838D] text-white rounded-full flex items-center justify-center font-semibold cursor-pointer" onClick={() => setShowProfile(prev => !prev)} > { userData.userName.charAt(0)} </div>
+        }
         <div className="relative hidden md:block">
           <MdOutlineShoppingCart className="text-[26px] text-gray-700 cursor-pointer" />
           <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] rounded-full w-[16px] h-[16px] flex items-center justify-center">
@@ -72,9 +87,20 @@ function Nav() {
       {showProfile && (
         <div className="absolute top-[70px] right-[24px] w-[200px] bg-white shadow-lg border border-gray-200 rounded-lg z-20">
           <ul className="flex flex-col py-2 text-sm text-gray-700 font-medium">
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Login</li>
-            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Logout</li>
+            {
+              !userData && <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => {
+                navigate("/login");
+                setShowProfile(false)
+              } }>Login</li>
+            }
+            {
+              userData && <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => {
+                handleLogout() ;
+                setShowProfile(false);
+              }} >Logout</li>
+            }
             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Orders</li>
+            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">About</li>
           </ul>
         </div>
       )}
