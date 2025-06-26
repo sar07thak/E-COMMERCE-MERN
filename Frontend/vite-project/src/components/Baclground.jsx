@@ -14,7 +14,7 @@ function Backgound({ heroCount }) {
     <img
   src={selectedImage}
   alt="Hero background"
-  className="w-full h-full object-cover sm:object-center object-top"
+  className="w-[100vw] h-[100vh] object-cover sm:object-center object-top"
 />
 
     </div>

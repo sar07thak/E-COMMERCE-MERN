@@ -1,5 +1,5 @@
 const express = require("express");
-const { register, login, logOut, googleLogin } = require("../controller/userController");
+const { register, login, logOut, googleLogin, adminLogin } = require("../controller/userController");
 const router = express.Router();
 
 //* Register Route
@@ -12,5 +12,7 @@ router.post("/login", login);
 router.get("/logOut", logOut);
 
 router.post("/gooleLogin", googleLogin );
+
+router.post("/adminLogin" , adminLogin)
 
 module.exports = router;

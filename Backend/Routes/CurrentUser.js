@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const { isAuth } = require("../middleware/isAuth(user)");
-const { getCurrentUser } = require("../controller/realTimeUserController");
+const { getCurrentUser, getAdmin } = require("../controller/realTimeUserController");
+const { isAdmin } = require("../middleware/adminAuth");
 
 router.get("/getCurrentUser", isAuth, getCurrentUser);
+router.get("/getAdmin" , isAdmin , getAdmin );
 
 module.exports = router;

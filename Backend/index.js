@@ -11,14 +11,14 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "http://localhost:5174" ],
     credentials: true,
   })
 );
 
 //*   ✅ Routes
 app.use("/auth", authRouter);
-app.use("/user" ,userRouter );
+app.use("/user", userRouter);
 
 main()
   .then(() => {

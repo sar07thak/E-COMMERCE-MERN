@@ -1,7 +1,7 @@
 const validator = require("validator");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
-const { genToken } = require("../config/token");
+const { genToken, genToken1 } = require("../config/token");
 
 const register = async (req, res) => {
   try {
@@ -125,9 +125,37 @@ const googleLogin = async (req, res) => {
   }
 };
 
+const adminLogin = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { email, password } = req.body;
+
+    if (
+      email === process.env.ADMIN_EMAIL &&
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      const token = await genToken1(email);
+
+      return res
+        .status(200)
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: false,
+          sameSite: "Strict",
+        })
+        .json({ message: "admin login complete ! ", token }); // ✅ added return here
+    }
+
+    return res.status(401).json({ message: "Invalid admin Credentials" }); // ❗ changed to 401 for unauthorized
+  } catch (err) {
+    res.status(500).json({ message: `Admin login Error: ${err.message}` });
+  }
+};
+
 module.exports = {
   register,
   login,
   logOut,
   googleLogin,
+  adminLogin,
 };
