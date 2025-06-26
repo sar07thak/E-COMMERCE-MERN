@@ -42,7 +42,7 @@ function Nav() {
 
   return (
     <div className="w-full h-[70px] fixed top-0 z-10 bg-white shadow-md border-b border-gray-200 flex items-center justify-between px-4 md:px-12">
-      {/* Logo / Brand */}
+      {/* ✅ Logo / Brand */}
       <div className="flex items-center gap-2" onClick={()=>{
         console.log("clicked the logo");
         navigate("/");
