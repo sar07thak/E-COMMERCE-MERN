@@ -55,12 +55,14 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    console.log("Login request body:", req.body);  // ✅ Optional debug
+    console.log("Login request body:", req.body); // ✅ Optional debug
 
     const { email, password } = req.body;
 
+    const validEmail = validator.isEmail(email);
+
     // ✅ Input validation
-    if (!email) {
+    if (!validEmail) {
       return res.status(400).json({ message: "Email is required" });
     }
 
@@ -82,7 +84,7 @@ const login = async (req, res) => {
 
     // ✅ Generate token with userId
     const token = await genToken(existUser._id);
-    console.log("Generated token:", token);  // ✅ Optional debug
+    console.log("Generated token:", token); // ✅ Optional debug
 
     // ✅ Set cookie and respond
     res
@@ -92,14 +94,12 @@ const login = async (req, res) => {
         secure: false,
         sameSite: "Strict",
       })
-      .json({ message: "User login successful" });  // ✅ Changed to JSON for consistency
-
+      .json({ message: "User login successful" }); // ✅ Changed to JSON for consistency
   } catch (err) {
-    console.log("Login error:", err);  // ✅ Optional debug
+    console.log("Login error:", err); // ✅ Optional debug
     res.status(500).json({ message: `Login Error: ${err.message}` });
   }
 };
-
 
 const logOut = async (req, res) => {
   try {

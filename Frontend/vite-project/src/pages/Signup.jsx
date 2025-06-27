@@ -1,32 +1,36 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authdataContext } from "../context/AuthContext"; // import context
-import axios from "axios"; // default import
+import { authdataContext } from "../context/AuthContext";
+import axios from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/firebase";
 import { userDataContext } from "../context/UserContext.jsx";
 
 export const Signup = () => {
-  const { serverUrl } = useContext(authdataContext); // ✅ extract serverUrl from context
-  const {getCurrentUser} = useContext(userDataContext)
-  
+  const { serverUrl } = useContext(authdataContext);
+  const { getCurrentUser } = useContext(userDataContext);
   const navigate = useNavigate();
 
-  // State variables
+  // ✅ Form state
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
-  // ✅ Validate form before submission
+  // ✅ Custom validation for all fields, including `.com` email check
   function validateForm() {
     const newErrors = {};
 
-    if (!name.trim()) newErrors.name = "Name is required";
+    if (!name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
     if (!email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/^\S+@\S+\.\S+$/.test(email)) {
       newErrors.email = "Invalid email format";
+    } else if (!email.endsWith(".com")) {
+      newErrors.email = "Email must end with .com";
     }
 
     if (!password.trim()) {
@@ -38,13 +42,13 @@ export const Signup = () => {
     return newErrors;
   }
 
-  // ✅ Handle form submission
+  // ✅ Main signup handler
   const handleSignUp = async (e) => {
     e.preventDefault();
 
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+      setErrors(newErrors); // ❌ Don't submit if errors exist
       return;
     }
 
@@ -52,28 +56,25 @@ export const Signup = () => {
       const response = await axios.post(
         `${serverUrl}/auth/register`,
         {
-          userName: name, // ✅ matches the schema
+          userName: name,
           email,
           password,
         },
         { withCredentials: true }
       );
 
-      console.log(response.data);
-      getCurrentUser();
-      navigate("/");
+      console.log("✅ Signup successful", response.data);
+      getCurrentUser(); // ✅ update user context
+      navigate("/"); // ✅ redirect
     } catch (err) {
-      console.error(
-        "❌ Registration Error:",
-        err.response?.data || err.message
-      );
+      console.error("❌ Signup error:", err.response?.data || err.message);
     }
   };
 
+  // ✅ Google signup handler
   const GoogleSignUp = async () => {
     try {
       const response = await signInWithPopup(auth, provider);
-      console.log(response);
       let userName = response.user;
       let name = userName.displayName;
       let email = userName.email;
@@ -81,7 +82,7 @@ export const Signup = () => {
       const result = await axios.post(
         `${serverUrl}/auth/gooleLogin`,
         {
-          userName: name, // ✅ matches the schema
+          userName: name,
           email,
         },
         { withCredentials: true }
@@ -92,9 +93,10 @@ export const Signup = () => {
 
       console.log(result);
     } catch (err) {
-      console.log(err);
+      console.log("❌ Google signup error:", err);
     }
   };
+
   return (
     <div className="h-screen flex justify-center items-center bg-[#B5838D]">
       <form
@@ -105,7 +107,7 @@ export const Signup = () => {
           Sign Up
         </h2>
 
-        {/* Google Signup Button (UI only) */}
+        {/* ✅ Google Signup */}
         <button
           onClick={GoogleSignUp}
           type="button"
@@ -127,7 +129,7 @@ export const Signup = () => {
           <hr className="flex-grow border-gray-300" />
         </div>
 
-        {/* Name Input */}
+        {/* ✅ Name input */}
         <div>
           <input
             type="text"
@@ -141,7 +143,7 @@ export const Signup = () => {
           )}
         </div>
 
-        {/* Email Input */}
+        {/* ✅ Email input with `.com` check */}
         <div>
           <input
             type="email"
@@ -155,7 +157,7 @@ export const Signup = () => {
           )}
         </div>
 
-        {/* Password Input */}
+        {/* ✅ Password input */}
         <div>
           <input
             type="password"
@@ -169,7 +171,7 @@ export const Signup = () => {
           )}
         </div>
 
-        {/* Submit Button */}
+        {/* ✅ Submit button */}
         <button
           type="submit"
           className="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300"
@@ -177,7 +179,7 @@ export const Signup = () => {
           Submit
         </button>
 
-        {/* Navigation to Login */}
+        {/* ✅ Navigation to login */}
         <p className="flex justify-center items-center gap-2 text-gray-800">
           Already have an account?
           <span
