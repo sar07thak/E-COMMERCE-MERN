@@ -9,10 +9,7 @@ const isAdmin = async (req, res, next) => {
       return res.status(400).json({ msg: "user does not have token" });
     }
 
-    const payload = jwt.verify(token, process.env.JWTKEY);
-    console.log(payload);
-
-    const { email } = payload;
+    const { email } = jwt.verify(token, process.env.JWTKEY);
 
     if (!email) {
       throw new Error("Invalid token");

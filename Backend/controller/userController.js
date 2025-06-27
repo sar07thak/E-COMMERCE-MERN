@@ -55,13 +55,18 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    // console.log("BODY:", req.body); // 👈 ADD THIS
+    console.log("Login request body:", req.body);  // ✅ Optional debug
+
     const { email, password } = req.body;
 
     // ✅ Input validation
-    if (!email) return res.status(400).json({ message: "Email is required" });
-    if (!password)
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    if (!password) {
       return res.status(400).json({ message: "Password is required" });
+    }
 
     const existUser = await User.findOne({ email });
 
@@ -75,8 +80,11 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
+    // ✅ Generate token with userId
     const token = await genToken(existUser._id);
+    console.log("Generated token:", token);  // ✅ Optional debug
 
+    // ✅ Set cookie and respond
     res
       .status(200)
       .cookie("token", token, {
@@ -84,11 +92,14 @@ const login = async (req, res) => {
         secure: false,
         sameSite: "Strict",
       })
-      .send("User login successfully!");
+      .json({ message: "User login successful" });  // ✅ Changed to JSON for consistency
+
   } catch (err) {
+    console.log("Login error:", err);  // ✅ Optional debug
     res.status(500).json({ message: `Login Error: ${err.message}` });
   }
 };
+
 
 const logOut = async (req, res) => {
   try {
