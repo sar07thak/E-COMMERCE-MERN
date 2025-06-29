@@ -16,7 +16,6 @@ app.use(
     credentials: true,
   })
 );
-
 //*   ✅ Routes
 app.use("/auth", authRouter);
 app.use("/user", userRouter);

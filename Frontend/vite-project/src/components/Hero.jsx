@@ -1,9 +1,7 @@
-import React from 'react';
 import { FaCircle } from 'react-icons/fa';
 
 function Hero({ heroData, heroCount, setHeroCount }) {
   const isDarkBg = heroCount === 2 || heroCount === 3; // adjust if needed
-
   return (
     <div className="absolute top-0 left-0 w-full h-full flex flex-col items-start justify-center px-6 md:px-20 z-10">
       <div>
