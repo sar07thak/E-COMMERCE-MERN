@@ -2,9 +2,9 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from "./Pages/Home.jsx";
 import Add from "./Pages/Add.jsx";
-import List from "./Pages/List.jsx";
 import Order from "./Pages/Order.jsx"
 import Login from './Pages/Login.jsx';
+import Lists from './Pages/List.jsx';
 import { useContext } from 'react';
 import { adminDataContext } from './context/AdminContext.jsx';
 
@@ -18,7 +18,7 @@ const App = () => {
       <Route path='/' element={<Home/>} />
       <Route path='/login' element ={<Login/>}/>
       <Route path='/add' element={<Add/>} />
-      <Route path='/list' element={<List/>} />
+      <Route path='/lists' element={<Lists></Lists>} />
       <Route path='/order' element={<Order/>} />
      </Routes>
     </>

@@ -22,7 +22,7 @@ function Sidebar() {
     {
       icon: <SiTicktick className="w-5 h-5" />,
       label: "View Orders",
-      path: "/orders",
+      path: "/order",
     },
   ];
 
