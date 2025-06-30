@@ -64,7 +64,7 @@ function Nav() {
         </li>
         <li
           className="hover:text-[#B5838D] cursor-pointer transition-colors duration-200"
-          onClick={() => navigate("/collection")}
+          onClick={() => navigate("/collections")}
         >
           Collections
         </li>

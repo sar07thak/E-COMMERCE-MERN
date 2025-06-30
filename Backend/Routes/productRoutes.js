@@ -1,5 +1,5 @@
 const express = require("express");
-const { addProduct, listPRoducts, deleteProduct } = require("../controller/productController");
+const { addProduct, listProducts, deleteProduct } = require("../controller/productController");
 const router = express.Router();
 const upload = require("../middleware/multer");
 const { isAdmin } = require("../middleware/adminAuth");
@@ -13,7 +13,7 @@ router.post("/addproduct",upload.fields([
   addProduct
 );
 
-router.get("/listproducts",listPRoducts );
+router.get("/list",listProducts );
 
 router.delete("/deleteProduct/:id", isAdmin , deleteProduct);
 
