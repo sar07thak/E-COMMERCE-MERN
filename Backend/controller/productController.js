@@ -1,5 +1,6 @@
 const uploadOnCloudinary = require("../config/cloudinary.js");
-const Product = require("../models/productModel.js")
+const Product  = require("../models/productModel.js");
+
 
 const addProduct = async (req, res) => {
   try {
@@ -44,7 +45,6 @@ const updateProduct = async (req, res) => {
   try {
   } catch (err) {}
 };
-
 
 module.exports = {
     addProduct ,
