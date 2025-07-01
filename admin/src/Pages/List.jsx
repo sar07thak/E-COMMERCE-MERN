@@ -16,7 +16,7 @@ function Lists() {
 
   const fetchList = async (e) => {
     try{
-      let result = await axios.get(`${serverUrl}/product/listproducts`, { withCredentials: true });
+      let result = await axios.get(`${serverUrl}/product/list`, { withCredentials: true });
       setList(result.data);
       console.log("List fetched successfully:", result.data);
     }catch(err){
