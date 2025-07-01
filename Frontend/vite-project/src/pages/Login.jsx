@@ -5,6 +5,7 @@ import axios from "axios"; // ✅ correct import
 import { auth, provider } from "../utils/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { userDataContext } from "../context/UserContext.jsx";
+import back from "../assets/backPhoto.jpg"
 
 const Login = () => {
   const navigate = useNavigate();
@@ -85,9 +86,10 @@ const Login = () => {
 
   return (
     <div className="h-screen flex justify-center items-center bg-[#B5838D]">
+      <img src={back} alt="" className="h-screen  md:object-fit absolute w-full " />
       <form
         onSubmit={handleLogin}
-        className="flex flex-col gap-4 w-full max-w-md p-10  rounded-2xl shadow-xl shadow-gray-700 bg-white"
+        className="flex flex-col gap-4 w-full max-w-md p-10  rounded-2xl shadow-xl shadow-gray-700 bg-gray-100  absolute "
       >
         <div className="text-center text-gray-700">
           <h2 className="text-2xl font-semibold">Login Page</h2>
