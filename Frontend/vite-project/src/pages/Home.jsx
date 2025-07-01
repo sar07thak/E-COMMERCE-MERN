@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Backgound from '../components/Baclground';
 import Hero from '../components/Hero';
 import Product from '../pages/Product.jsx';
+import OurPolicy from '../components/OurPolicy.jsx';
+import NewLetterBox from '../components/NewLetterBox.jsx';
+import Footer from '../components/Footer.jsx';
 
 function Home() {
   const heroData = [
@@ -34,6 +37,9 @@ function Home() {
 
       {/* Product Section (starts after full screen) */}
       <Product />
+      <OurPolicy />
+      <NewLetterBox />
+      <Footer />
     </div>
   );
 }
