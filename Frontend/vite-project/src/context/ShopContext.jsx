@@ -10,7 +10,7 @@ const ShopContext = ({children}) => {
    const { serverUrl } = useContext(authdataContext);
    const [ search, setSearch ] = useState("");
    const [ showSearch, setShowSearch ] = useState(false);
-   const currncy = "₹";
+   const currency = "₹";
    const deliveryCharges = 50;
 
 
@@ -30,7 +30,7 @@ const ShopContext = ({children}) => {
    },[])
 
     const value ={
-        products,currncy,deliveryCharges,getProduct,search,setSearch,showSearch,setShowSearch
+        products,currency,deliveryCharges,getProduct,search,setSearch,showSearch,setShowSearch
     }
 
     return (

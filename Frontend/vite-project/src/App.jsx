@@ -10,6 +10,7 @@ import About from "./pages/About.jsx";
 import Product from "./pages/Product.jsx";
 import Contact from "./pages/Contact.jsx";
 import Order from "./pages/Order.jsx";
+import ProductDetails from "./pages/ProductDetails.jsx";
 
 
 function App() {
@@ -30,19 +31,22 @@ function App() {
     element = { userData ? <Home/> : <Navigate to="/login" state={{from : location.pathname}}/>} ></Route>
 
     <Route path="/collections" 
-     element = { userData ? <Collections/> : <Navigate to="/collections" state={{from : location.pathname}}/>}></Route>
+     element = { userData ? <Collections/> : <Navigate to="/login" state={{from : location.pathname}}/>}></Route>
 
     <Route path="/about" 
-    element = { userData ? <About/> : <Navigate to="/about" state={{from : location.pathname}}/>}></Route>
+    element = { userData ? <About/> : <Navigate to="/login" state={{from : location.pathname}}/>}></Route>
 
     <Route path="/contact" 
-     element = { userData ? <Contact/> : <Navigate to="/contact" state={{from : location.pathname}}/>}></Route>
+     element = { userData ? <Contact/> : <Navigate to="/login" state={{from : location.pathname}}/>}></Route>
 
     <Route path="/order" 
-     element = { userData ? <Order/> : <Navigate to="/order" state={{from : location.pathname}}/>}></Route>
+     element = { userData ? <Order/> : <Navigate to="/login" state={{from : location.pathname}}/>}></Route>
 
     <Route path="/product/:id"
-     element = { userData ? <Product/> : <Navigate to="/product" state={{from : location.pathname}}/>}></Route> 
+     element = { userData ? <Product/> : <Navigate to="/login" state={{from : location.pathname}}/>}></Route> 
+
+    <Route path="/productdetail/:productId"
+     element = { userData ? <ProductDetails/> : <Navigate to="/login" state={{from : location.pathname}}/>}></Route> 
    </Routes>
     </>
   );
