@@ -11,6 +11,7 @@ import Product from "./pages/Product.jsx";
 import Contact from "./pages/Contact.jsx";
 import Order from "./pages/Order.jsx";
 import ProductDetails from "./pages/ProductDetails.jsx";
+import Cart from "./pages/Cart.jsx";
 
 
 function App() {
@@ -47,6 +48,9 @@ function App() {
 
     <Route path="/productdetail/:productId"
      element = { userData ? <ProductDetails/> : <Navigate to="/login" state={{from : location.pathname}}/>}></Route> 
+
+         <Route path="/cart"
+     element = { userData ? <Cart/> : <Navigate to="/login" state={{from : location.pathname}}/>}></Route> 
    </Routes>
     </>
   );
