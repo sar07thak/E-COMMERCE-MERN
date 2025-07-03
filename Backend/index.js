@@ -6,6 +6,7 @@ const cors = require("cors");
 const authRouter = require("./Routes/userRoutes");
 const userRouter = require("./Routes/CurrentUser");
 const productRouter = require("./Routes/productRoutes");
+const cartRouter = require("./Routes/cartRoutes");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -20,6 +21,7 @@ app.use(
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/product",productRouter);
+app.use("/cart",cartRouter);
 
 main()
   .then(() => {
