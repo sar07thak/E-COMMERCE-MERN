@@ -7,6 +7,7 @@ const authRouter = require("./Routes/userRoutes");
 const userRouter = require("./Routes/CurrentUser");
 const productRouter = require("./Routes/productRoutes");
 const cartRouter = require("./Routes/cartRoutes");
+const orderRouter = require("./Routes/orderRoutes");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -22,6 +23,7 @@ app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/product",productRouter);
 app.use("/cart",cartRouter);
+app.use("/order",orderRouter);
 
 main()
   .then(() => {
