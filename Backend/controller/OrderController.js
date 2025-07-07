@@ -43,7 +43,40 @@ const userOrders = async ( req , res ) => {
     }
 }
 
+
+const allOrders = async ( req , res ) => {
+    try{
+        const orders = await Order.find({});
+
+        if (!orders || orders.length === 0) {
+            return res.status(404).json({ message: "No orders found" });
+        }
+
+        return res.status(200).json(orders);
+    }catch(err){
+        console.log("Error fetching all orders:", err);
+        return res.status(500).json({ message: "Error fetching all orders" });
+    }
+}
+
+const updateStatus = async ( req , res ) => {
+    try{
+        const { orderId , status } = req.body;
+        const updatedOrder = await Order.findByIdAndUpdate(orderId, { status }, { new: true });
+        if (!updatedOrder) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+        return res.status(200).json({ message: "Order status updated successfully", order: updatedOrder });
+    }catch(err){    
+        
+        console.error("Error updating order status:", err);
+        return res.status(500).json({ message: "Error updating order status" });
+    }
+}
+
 module.exports = {
     placeOrder ,
-    userOrders
+    userOrders ,
+    allOrders ,
+    updateStatus
 }   
