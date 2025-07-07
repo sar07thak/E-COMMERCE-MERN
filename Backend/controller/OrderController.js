@@ -12,6 +12,7 @@ const placeOrder = async ( req, res ) => {
             userId,
             status: 'Order Placed',
             paymentMethod: 'COD',
+            payment: false ,
             date: Date.now()
         }
         const newOrder = new Order(orderData);
@@ -26,6 +27,23 @@ const placeOrder = async ( req, res ) => {
     }
 }
 
+const userOrders = async ( req , res ) => {
+    try{
+        const userId = req.userId;
+        const orders = await Order.find({ userId });
+
+        if (!orders || orders.length === 0) {
+            return res.status(404).json({ message: "No orders found" });
+        }
+
+        return res.status(200).json(orders);
+    }catch(err){
+        console.log("Error fetching user orders:", err);
+        return res.status(500).json({ message: "Error fetching user orders" });
+    }
+}
+
 module.exports = {
-    placeOrder
+    placeOrder ,
+    userOrders
 }   
