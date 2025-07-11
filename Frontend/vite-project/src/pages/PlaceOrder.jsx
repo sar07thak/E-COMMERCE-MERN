@@ -33,6 +33,30 @@ function PlaceOrder() {
     setFormData(data => ({ ...data, [name]: value }))
   }
 
+    const initPay = (order) => {
+        const options = {
+      key:import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: order.amount,
+      currency: order.currency,
+      name:'Order Payment',
+      description: 'Order Payment',
+      order_id: order.id,
+      receipt: order.receipt,
+    //   handler: async (response) => {
+    //     console.log(response)
+    // const {data} = await axios.post(`${serverUrl}/order`,response,{withCredentials:true})
+    // if(data){
+    //     navigate("/order")
+    //     setCartItem({})
+
+    // }
+    //   }
+    }
+    const rzp = new window.Razorpay(options)
+    rzp.open()
+   }
+
+
   const onSubmitHandler = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -71,7 +95,14 @@ console.log("Total Amount:", getCartAmount() + deliveryCharges);
           } else {
             console.error(result.data)
           }
-          break
+          break ;
+        case 'razorpay' : 
+          const resultRazorPay = await axios.post(`${serverUrl}/order/razorpay` , orderData , { withCredentials : true})
+          if( resultRazorPay.data ){
+            console.log(resultRazorPay.data);
+                initPay(resultRazorPay.data);
+          }
+          break;
 
         default:
           break
@@ -152,7 +183,7 @@ console.log("Total Amount:", getCartAmount() + deliveryCharges);
       <button
         onClick={() => setMethod('cod')}
         className={`w-[200px] h-[50px] text-[14px] px-[20px] rounded-md shadow-md font-bold bg-gradient-to-br from-indigo-100 to-white text-indigo-700 border-2 ${method === 'cod' ? 'border-indigo-700' : 'border-gray-300'}`}>
-        CASH ON DELIVERY
+        CASH payON DELIVERY
       </button>
     </div>
   </div>

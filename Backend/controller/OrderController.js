@@ -1,5 +1,12 @@
 const Order = require("../models/orderModel")
 const User = require("../models/userModel")
+const Razorpay = require('razorpay');
+
+const currency = "inr";
+const Razorpayinstance = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID ,
+    key_secret: process.env.RAZORPAY_KEY_SECRET ,
+});
 
 const placeOrder = async ( req, res ) => {
     try{
@@ -17,9 +24,9 @@ const placeOrder = async ( req, res ) => {
         }
         const newOrder = new Order(orderData);
         await newOrder.save();
-
+        
         await User.findByIdAndUpdate( userId , { cartData : {}});
-
+        
         return res.status(201).json({ message: "Order placed successfully", order: newOrder });
     }catch(err){
         console.error("Error placing order:", err);
@@ -27,6 +34,40 @@ const placeOrder = async ( req, res ) => {
     }
 }
 
+const placeOrderRazorPay = async (req, res) =>{ 
+    try{
+        const { items , amount , address } = req.body ;
+        const userId = req.userId ;
+        const orderData = {
+            items,
+            amount,
+            address,
+            userId,
+            status: 'Razorpay',
+            paymentMethod: 'COD',
+            payment: false ,
+            date: Date.now()
+        }
+        const newOrder = new Order(orderData);
+        await newOrder.save();
+        
+        const options = {
+            amount : amount*100 ,
+            currency : currency.toUpperCase(),
+            receipt : newOrder._id.toString()
+        }
+        await Razorpayinstance.orders.create(options , (error,order) =>{
+            if(error){
+                console.log(error);
+                return res.status(500).json(error)
+            }
+            res.status(200).json(order)
+        })
+    }catch(err){
+        console.error("Error placing order:", err);
+        res.status(500).json({ message: "place order error" });
+    }
+}
 const userOrders = async ( req , res ) => {
     try{
         const userId = req.userId;
@@ -42,6 +83,9 @@ const userOrders = async ( req , res ) => {
         return res.status(500).json({ message: "Error fetching user orders" });
     }
 }
+
+
+
 
 
 const allOrders = async ( req , res ) => {
@@ -74,9 +118,12 @@ const updateStatus = async ( req , res ) => {
     }
 }
 
+
+
 module.exports = {
     placeOrder ,
     userOrders ,
     allOrders ,
-    updateStatus
+    updateStatus ,
+    placeOrderRazorPay
 }   
