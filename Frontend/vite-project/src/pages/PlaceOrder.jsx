@@ -42,15 +42,15 @@ function PlaceOrder() {
       description: 'Order Payment',
       order_id: order.id,
       receipt: order.receipt,
-    //   handler: async (response) => {
-    //     console.log(response)
-    // const {data} = await axios.post(`${serverUrl}/order`,response,{withCredentials:true})
-    // if(data){
-    //     navigate("/order")
-    //     setCartItem({})
+      handler: async (response) => {
+        console.log(response)
+    const {data} = await axios.post(`${serverUrl}/order/verifyrazorpay`,response,{withCredentials:true})
+    if(data){
+        navigate("/order")
+        setCartItem({})
 
-    // }
-    //   }
+    }
+      }
     }
     const rzp = new window.Razorpay(options)
     rzp.open()

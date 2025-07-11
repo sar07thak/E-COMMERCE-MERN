@@ -33,7 +33,7 @@ const Nav = () => {
         onClick={() => navigate("/")}
       >
         <img src={logo} alt="Logo" className="w-[100px] rounded-xl" />
-        <h1 className="text-lg font-semibold text-gray-800">OneCart Admin</h1>
+        <h1 className="text-lg font-semibold text-gray-800">Aure Admin</h1>
       </div>
 
       {/* Logout Button */}

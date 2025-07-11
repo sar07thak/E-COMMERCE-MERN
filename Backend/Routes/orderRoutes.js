@@ -1,6 +1,6 @@
 const express = require('express');
 const { isAuth } = require('../middleware/isAuth');
-const { placeOrder, userOrders, allOrders, updateStatus, placeOrderRazorPay } = require('../controller/OrderController');
+const { placeOrder, userOrders, allOrders, updateStatus, placeOrderRazorPay, verifyRazorpay } = require('../controller/OrderController');
 const { isAdmin } = require('../middleware/adminAuth');
 
 const router = express.Router();
@@ -9,6 +9,7 @@ const router = express.Router();
 router.post("/placeorder",isAuth , placeOrder)
 router.post("/userorder",isAuth , userOrders)
 router.post("/razorpay",isAuth,placeOrderRazorPay)
+router.post("/verifyrazorpay",isAuth,verifyRazorpay)
 
 // for admin
 router.post("/list", isAdmin , allOrders ) ;
