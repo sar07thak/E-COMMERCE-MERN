@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react'
-import Nav from '../component/Nav'
-import Sidebar from '../component/Sidebar'
+import Nav from '../Component/Nav'
+import Sidebar from '../Component/Sidebar'
 import upload from '../assets/upload image.jpg'
 import { authDatacontext } from '../context/AuthContext'
 import axios from 'axios'
+import { toast } from 'react-toastify'
+import Loading from '../Component/Loading'
 
 function Add() {
 
@@ -18,11 +20,12 @@ function Add() {
   const [subCategory, setSubCategory] = useState("TopWear")
   const [bestseller, setBestSeller] = useState(false)
   const [sizes, setSizes] = useState([])
-
+  const [ loading , setLoading ] = useState(false);
   const { serverUrl } = useContext(authDatacontext)
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const formData = new FormData()
       formData.append("name",name)
@@ -40,6 +43,8 @@ function Add() {
 
       let result = await axios.post(serverUrl + "/product/addproduct" , formData, {withCredentials:true});
       console.log(result.data);
+      toast.success("Item added successfully");
+      setLoading(false);
 
       if( result.data){
             setName("")
@@ -55,6 +60,7 @@ function Add() {
       }
     } catch (err) {
       console.log("Error in adding product:", err);
+      toast.error("error in item addition")
     }
   }
 
@@ -173,8 +179,10 @@ function Add() {
 
           {/* Submit Button */}
           <button className='w-[160px] px-[20px] py-[15px] rounded-xl bg-[#7A5AF8] text-white font-semibold text-[16px] hover:bg-[#674ED6] transition border-none mt-[20px]'>
-            Add Product
-          </button>
+            {
+              loading ? <Loading /> : "Add Product"
+            }
+            </button>
         </form>
       </div>
     </div>

@@ -19,6 +19,7 @@ const Nav = () => {
       console.log(result.data);
       getAdmin();
       navigate("/login");
+      toast.success("Logout sucessfully")
     } catch (err) {
       console.log(err);
       toast.error("Logout Failed");

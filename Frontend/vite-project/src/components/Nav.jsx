@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { authdataContext } from "../context/AuthContext";
 import { shopDataContext } from "../context/ShopContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function Nav() {
   const navigate = useNavigate();
@@ -26,8 +27,10 @@ function Nav() {
       console.log(result.data);
       getCurrentUser();
       navigate("/login");
+      toast.success("User logOut successfully");
     } catch (error) {
       console.log(error.response?.data?.msg);
+      toast.error("User can logOut successfully");
     }
   };
 

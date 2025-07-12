@@ -4,15 +4,19 @@ import Sidebar from "../Component/Sidebar.jsx"
 import { SiEbox } from "react-icons/si"
 import axios from 'axios'
 import { authDatacontext } from '../context/AuthContext'
+import Loading from '../Component/Loading.jsx'
 
 function Orders() {
   const [orders, setOrders] = useState([])
   const { serverUrl } = useContext(authDatacontext)
+  const [ loading , setLoading ] = useState(false)
 
   const fetchAllOrders = async () => {
     try {
+      setLoading(true);
       const result = await axios.post(serverUrl + '/order/list', {}, { withCredentials: true })
       setOrders(result.data.reverse())
+      setLoading(false);
     } catch (error) {
       console.log(error)
     }
@@ -48,7 +52,7 @@ function Orders() {
           <h2 className="text-2xl md:text-4xl font-semibold mb-8 text-gray-800">All Orders List</h2>
 
           <div className="flex flex-col gap-6">
-            {orders.map((order, index) => (
+            { loading ? <Loading/> :  orders.map((order, index) => (
               <div
                 key={index}
                 className="w-full bg-white border border-gray-200 rounded-xl shadow-md p-4 sm:p-6 flex flex-col md:flex-row gap-6"

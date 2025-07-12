@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { authDatacontext } from "../context/AuthContext.jsx";
 import axios from "axios"
 import { adminDataContext } from "../context/AdminContext.jsx";
+import { toast } from "react-toastify";
 
 
 const Login = () => {
@@ -23,10 +24,12 @@ const Login = () => {
         { withCredentials: true }
       );
       console.log("✅ Login Successful:", response.data);
+      toast.success("Admin login sucessfully");
       getAdmin();
       navigate("/");
     } catch (err) {
       console.error("❌ Login Error:", err.response?.data || err.message);
+      toast.error("Admin login failed");
     }
   };
 

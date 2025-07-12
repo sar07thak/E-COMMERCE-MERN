@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { authdataContext } from './AuthContext';
 import axios from 'axios';
 import { userDataContext } from './UserContext';
+import { toast } from "react-toastify";
 
 export const shopDataContext = createContext();
 
@@ -60,8 +61,10 @@ const ShopContext = ({ children }) => {
     if (userData) {
       try {
         await axios.post(`${serverUrl}/cart/add`, { itemId, size }, { withCredentials: true });
+        toast.success("item add to cart");
       } catch (error) {
         console.error("Error adding to cart:", error);
+        toast.error("item can not be added");
       }
     }
   };

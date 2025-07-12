@@ -7,12 +7,14 @@ import Login from './Pages/Login.jsx';
 import Lists from './Pages/List.jsx';
 import { useContext } from 'react';
 import { adminDataContext } from './context/AdminContext.jsx';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const App = () => {
   const { adminData } = useContext(adminDataContext)
   return (
     <>
+            <ToastContainer />
     { !adminData ? <Login/> : <>
      <Routes>
       <Route path='/' element={<Home/>} />

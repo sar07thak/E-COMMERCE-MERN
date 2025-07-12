@@ -7,17 +7,20 @@ import { authDatacontext } from '../context/AuthContext';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { MdDelete } from "react-icons/md";
-
+import { toast } from 'react-toastify';
 
 function Lists() {
   const [ list , setList ] = useState([]);
-
+  const [ loading , setLoading ] = useState(false);
   const { serverUrl } = useContext(authDatacontext);
 
   const fetchList = async (e) => {
+
     try{
+      setLoading(true);
       let result = await axios.get(`${serverUrl}/product/list`, { withCredentials: true });
       setList(result.data);
+      setLoading(false);
       console.log("List fetched successfully:", result.data);
     }catch(err){
       console.log("Error fetching list:", err);
@@ -27,7 +30,7 @@ function Lists() {
   const removeList = async (id) => {
     try{
       let result = await axios.delete(`${serverUrl}/product/deleteProduct/${id}`, { withCredentials: true });
-      
+      toast.success("Item deleted successfully");
       if(result.data){
         fetchList();
       } else {
@@ -35,6 +38,7 @@ function Lists() {
       }
     }catch(err){
       console.log("Error removing product:", err);
+      toast.error("item can not be deleted");
     }
   }
 
@@ -54,7 +58,6 @@ function Lists() {
           <div className='w-[400px] h-[50px] text-[28px] md:text-[40px] mb-[20px] font-semibold text-[#4B0082]'>
             All Listed Products
           </div>
-          
           {
             list?.length > 0 ? (
               list.map((item,index)=>(

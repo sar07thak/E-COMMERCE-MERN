@@ -5,6 +5,7 @@ import axios from "axios";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/firebase";
 import { userDataContext } from "../context/UserContext.jsx";
+import { toast } from "react-toastify";
 
 export const Signup = () => {
   const { serverUrl } = useContext(authdataContext);
@@ -66,8 +67,10 @@ export const Signup = () => {
       console.log("✅ Signup successful", response.data);
       getCurrentUser(); // ✅ update user context
       navigate("/"); // ✅ redirect
+      toast.success("Sign-up successfully");
     } catch (err) {
       console.error("❌ Signup error:", err.response?.data || err.message);
+      toast.error("Sign-up can't successfully");
     }
   };
 
@@ -90,10 +93,11 @@ export const Signup = () => {
 
       getCurrentUser();
       navigate("/");
-
+      toast.success("Sign-up successfully");
       console.log(result);
     } catch (err) {
       console.log("❌ Google signup error:", err);
+      toast.error("Sign-up can't successfully");
     }
   };
 

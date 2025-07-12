@@ -13,6 +13,7 @@ import Order from "./pages/Order.jsx";
 import ProductDetails from "./pages/ProductDetails.jsx";
 import Cart from "./pages/Cart.jsx";
 import PlaceOrder from "./pages/PlaceOrder.jsx";
+import { ToastContainer, toast } from 'react-toastify';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
   const location = useLocation();
   return (
     <>
+    <ToastContainer />
     { userData && <Nav />  }
     
    <Routes>

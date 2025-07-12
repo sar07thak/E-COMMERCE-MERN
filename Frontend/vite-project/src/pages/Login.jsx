@@ -6,6 +6,7 @@ import { auth, provider } from "../utils/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { userDataContext } from "../context/UserContext.jsx";
 import back from "../assets/backPhoto.jpg"
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -54,8 +55,10 @@ const Login = () => {
       console.log("✅ Login Successful:", response.data);
       getCurrentUser() ;
       navigate('/');
+      toast.success("Login sucessfully")   
     } catch (err) {
       console.error("❌ Login Error:", err.response?.data || err.message);
+      toast.error("Login Error")   
     }
   };
 
@@ -78,9 +81,11 @@ const Login = () => {
 
       getCurrentUser();
       navigate("/");
+      toast.success("Login sucessfully")   
       console.log(result);
     } catch (err) {
       console.log("login Error" + err );
+      toast.error("Login Error")   
     }
   };
 
