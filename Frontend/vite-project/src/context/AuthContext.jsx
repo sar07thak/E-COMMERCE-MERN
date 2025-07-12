@@ -7,7 +7,7 @@ export const authdataContext = createContext();
 // 2. Create context provider
 const AuthContext = ({ children }) => {
   // Server URL to be shared via context
-  const serverUrl = "https://e-commerce-t1b1.onrender.com";
+  const serverUrl = "http://localhost:4000";
 
   return (
     <authdataContext.Provider value={{ serverUrl }}>
