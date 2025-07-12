@@ -44,8 +44,8 @@ const register = async (req, res) => {
       .status(201)
       .cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "Strict",
+        secure: true,
+        sameSite: "none",
       })
       .send("User registered successfully!");
   } catch (err) {
@@ -91,8 +91,8 @@ const login = async (req, res) => {
       .status(200)
       .cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "Strict",
+        secure: true,
+        sameSite: "none",
       })
       .json({ message: "User login successful" }); // ✅ Changed to JSON for consistency
   } catch (err) {
@@ -125,8 +125,8 @@ const googleLogin = async (req, res) => {
     let token = await genToken(user._id);
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "Strict",
+      secure: true,
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return res.status(200).json(user);
@@ -151,8 +151,8 @@ const adminLogin = async (req, res) => {
         .status(200)
         .cookie("token", token, {
           httpOnly: true,
-          secure: false,
-          sameSite: "Strict",
+          secure: true,
+          sameSite: "none",
         })
         .json({ message: "admin login complete ! ", token }); // ✅ added return here
     }
