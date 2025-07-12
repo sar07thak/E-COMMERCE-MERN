@@ -3,10 +3,11 @@ import { useParams } from 'react-router-dom';
 import { shopDataContext } from '../context/ShopContext';
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import RelatedProducts from '../components/RelatedProducts';
+import Loading from '../components/Loading';
 
 function ProductDetail() {
     let { productId } = useParams();
-    let { products, currency, addtoCart } = useContext(shopDataContext);
+    let { products, currency, addtoCart , loading } = useContext(shopDataContext);
     let [productData, setProductData] = useState(null);
 
     const [image, setImage] = useState('');
@@ -98,9 +99,9 @@ function ProductDetail() {
                                 ? 'bg-blue-600 hover:bg-blue-700'
                                 : 'bg-gray-400 cursor-not-allowed'
                             }`}
-                        onClick={() => size && addtoCart(productData._id, size)}
+                        onClick={() => ( size && addtoCart(productData._id, size))}
                     >
-                        Add to Cart
+                        { loading ? <Loading /> : "Add to Cart"}
                     </button>
 
                     <div className="border-t pt-4 mt-6 text-sm text-gray-600 space-y-1">

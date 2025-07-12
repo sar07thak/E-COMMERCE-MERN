@@ -15,6 +15,7 @@ const ShopContext = ({ children }) => {
   const [cartItem, setCartItem] = useState({});
   const currency = "₹";
   const deliveryCharges = 50;
+  const [loading , setLoading ] = useState(false);
 
   const getProduct = async () => {
     try {
@@ -45,7 +46,6 @@ const ShopContext = ({ children }) => {
     }
 
     let cartData = structuredClone(cartItem);
-
     if (cartData[itemId]) {
       if (cartData[itemId][size]) {
         cartData[itemId][size] += 1;
@@ -55,13 +55,15 @@ const ShopContext = ({ children }) => {
     } else {
       cartData[itemId] = { [size]: 1 };
     }
-
+    
+    setLoading(true);
     setCartItem(cartData);
 
     if (userData) {
       try {
         await axios.post(`${serverUrl}/cart/add`, { itemId, size }, { withCredentials: true });
         toast.success("item add to cart");
+        setLoading(false);
       } catch (error) {
         console.error("Error adding to cart:", error);
         toast.error("item can not be added");
@@ -132,6 +134,7 @@ const ShopContext = ({ children }) => {
     updateQuantity,
     getCartAmount,
     cartItem,
+    loading
   };
 
   return (

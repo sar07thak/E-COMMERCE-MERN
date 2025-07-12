@@ -1,26 +1,26 @@
 const jwt = require("jsonwebtoken");
 
-
 const isAdmin = async (req, res, next) => {
   try {
     const { token } = req.cookies;
 
     if (!token) {
-      return res.status(400).json({ msg: "user does not have token" });
+      return res.status(401).json({ message: "Access denied. No token provided." });
     }
 
-    const { email } = jwt.verify(token, process.env.JWTKEY);
+    const decoded = jwt.verify(token, process.env.JWTKEY);
 
-    if (!email) {
-      throw new Error("Invalid token");
+    // ✅ Compare decoded email with ADMIN_EMAIL
+    if (decoded.email !== process.env.ADMIN_EMAIL) {
+      return res.status(403).json({ message: "Access denied. Not an admin." });
     }
 
-    req.adminEmail = process.env.ADMIN_EMAIL;
-
+    // ✅ Pass data to next middleware/route
+    req.adminEmail = decoded.email;
     next();
   } catch (err) {
-    console.log("isAdmin error", err);
-    return res.status(500).json({ message: `isAdmin error ${err.message}` });
+    console.error("isAdmin error:", err);
+    return res.status(401).json({ message: `Invalid token: ${err.message}` });
   }
 };
 

@@ -1,5 +1,6 @@
 const uploadOnCloudinary = require("../config/cloudinary.js");
 const Product  = require("../models/productModel.js");
+const mongoose = require("mongoose");
 
 
 const addProduct = async (req, res) => {
@@ -50,6 +51,12 @@ const  listProducts = async ( req , res ) => {
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      console.log("Invalid ID:", id);
+      return res.status(400).json({ message: "Invalid product ID" });
+    }
+
     const product = await Product.findByIdAndDelete(id);
 
     if (!product) {
@@ -59,7 +66,7 @@ const deleteProduct = async (req, res) => {
     return res.status(200).json({ message: "Product deleted successfully" });
 
   } catch (err) {
-    console.log("DeleteProduct error:", err); // ✅ Optional debug
+    console.error("DeleteProduct error:", err); // ✅ See backend terminal for actual issue
     res.status(500).json({ message: `DeleteProduct Error: ${err.message}` });
   }
 };

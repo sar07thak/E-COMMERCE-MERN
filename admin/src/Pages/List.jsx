@@ -29,6 +29,7 @@ function Lists() {
 
   const removeList = async (id) => {
     try{
+      console.log("Deleting product with ID:", id);
       let result = await axios.delete(`${serverUrl}/product/deleteProduct/${id}`, { withCredentials: true });
       toast.success("Item deleted successfully");
       if(result.data){

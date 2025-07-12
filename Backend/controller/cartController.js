@@ -57,12 +57,7 @@ const getUserCart = async (req, res) => {
     try {
         const userData = await User.findById(req.userId)
         let cartData = await userData.cartData;
-
-
         return res.status(200).json(cartData)
-
-
-
     } catch (error) {
         console.log(error);
         res.status(500).json({ msg: "get user cart Error" });
