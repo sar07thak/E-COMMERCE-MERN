@@ -14,7 +14,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: ["https://e-commerce-mern-frontend-vr2x.onrender.com", "https://e-commerce-mern-admin-2adt.onrender.com"],
     credentials: true,
   })
 );
