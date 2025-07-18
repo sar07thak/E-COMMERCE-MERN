@@ -1,3 +1,4 @@
+// all other imports remain the same
 import React, { useContext, useState } from 'react'
 import Title from "../components/Title.jsx"
 import CartTotal from '../components/CartTotal.jsx'
@@ -50,7 +51,7 @@ function PlaceOrder() {
           navigate("/order")
           setCartItem({})
           toast.success("Order Placed");
-        }else{
+        } else {
           toast.error("Order can not placed");
         }
       }
@@ -58,7 +59,6 @@ function PlaceOrder() {
     const rzp = new window.Razorpay(options)
     rzp.open()
   }
-
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
@@ -127,38 +127,38 @@ function PlaceOrder() {
           {/* Inputs */}
           <div className='flex gap-4 mb-4'>
             <input type="text" placeholder='First name' name='firstName' value={formData.firstName} onChange={onChangeHandler}
-              className='w-1/2 h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] px-4 shadow-sm' required />
+              className='w-1/2 h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] text-black px-4 shadow-sm' required />
             <input type="text" placeholder='Last name' name='lastName' value={formData.lastName} onChange={onChangeHandler}
-              className='w-1/2 h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] px-4 shadow-sm' required />
+              className='w-1/2 h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] text-black px-4 shadow-sm' required />
           </div>
 
           <div className='mb-4'>
             <input type="email" placeholder='Email address' name='email' value={formData.email} onChange={onChangeHandler}
-              className='w-full h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] px-4 shadow-sm' required />
+              className='w-full h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] text-black px-4 shadow-sm' required />
           </div>
 
           <div className='mb-4'>
             <input type="text" placeholder='Street' name='street' value={formData.street} onChange={onChangeHandler}
-              className='w-full h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] px-4 shadow-sm' required />
+              className='w-full h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] text-black px-4 shadow-sm' required />
           </div>
 
           <div className='flex gap-4 mb-4'>
             <input type="text" placeholder='City' name='city' value={formData.city} onChange={onChangeHandler}
-              className='w-1/2 h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] px-4 shadow-sm' required />
+              className='w-1/2 h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] text-black px-4 shadow-sm' required />
             <input type="text" placeholder='State' name='state' value={formData.state} onChange={onChangeHandler}
-              className='w-1/2 h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] px-4 shadow-sm' required />
+              className='w-1/2 h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] text-black px-4 shadow-sm' required />
           </div>
 
           <div className='flex gap-4 mb-4'>
             <input type="text" placeholder='Pincode' name='pinCode' value={formData.pinCode} onChange={onChangeHandler}
-              className='w-1/2 h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] px-4 shadow-sm' required />
+              className='w-1/2 h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] text-black px-4 shadow-sm' required />
             <input type="text" placeholder='Country' name='country' value={formData.country} onChange={onChangeHandler}
-              className='w-1/2 h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] px-4 shadow-sm' required />
+              className='w-1/2 h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] text-black px-4 shadow-sm' required />
           </div>
 
           <div className='mb-6'>
             <input type="text" placeholder='Phone' name='phone' value={formData.phone} onChange={onChangeHandler}
-              className='w-full h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] px-4 shadow-sm' required />
+              className='w-full h-[50px] rounded-md border border-gray-300 bg-white placeholder:text-gray-500 text-[16px] text-black px-4 shadow-sm' required />
           </div>
 
           <div className='flex justify-center'>
