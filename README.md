@@ -5,6 +5,18 @@ An end-to-end full-stack E-Commerce application built with the MERN stack (Mongo
 [🌐 Live Demo](https://e-commerce-mern-frontend-vr2x.onrender.com)
 
 
+----
+## 👉 For Admin 
+[🌐 Live Demo](https://e-commerce-mern-admin-2adt.onrender.com)
+
+You can pre-create admin user in MongoDB or hardcode a role field.
+{
+  "email": "admin@example.com",
+  "password": "admin123",
+  "role": "admin"
+}
+----
+
 ## ✨ Features
 
 ### 👤 User Side
