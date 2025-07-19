@@ -11,8 +11,8 @@ An end-to-end full-stack E-Commerce application built with the MERN stack (Mongo
 
 You can pre-create admin user in MongoDB or hardcode a role field.
 {
-  "email": "admin@example.com",
-  "password": "admin123",
+  "email": "Admin07@aure.com",
+  "password": "admin0907"
   "role": "admin"
 }
 ----
